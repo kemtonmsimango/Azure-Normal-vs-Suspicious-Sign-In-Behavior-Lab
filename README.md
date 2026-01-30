@@ -153,8 +153,8 @@ Screenshot 9
 
 In Log Analytics → Logs, I ran:
 
-SigninLogs
-AuditLogs
+📊SigninLogs
+📊AuditLogs
 
 
 Screenshot 10
@@ -322,10 +322,10 @@ Unusual time compared to baseline routine
 
 # Key Takeaway
 
-Security is not always about reacting to alerts.
+🟢Security is not always about reacting to alerts.
 
-Sometimes it is about noticing when something does not fit.
+🟢Sometimes it is about noticing when something does not fit.
 
-By establishing a baseline first, even small changes in behavior become visible and meaningful.
+🟢By establishing a baseline first, even small changes in behavior become visible and meaningful.
 
 Thank you for the Read!!
