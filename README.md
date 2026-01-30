@@ -107,7 +107,7 @@ Screenshot 6
 </p>
 
 
-Step 2.2 Connect Entra Logs Using Microsoft Sentinel
+## Step 2.2 Connect Entra Logs Using Microsoft Sentinel
 
 I used Microsoft Sentinel because it is the cleanest way to ingest:
 
@@ -147,9 +147,9 @@ Screenshot 9
 
 <p align="center">
   <img src="images/Step 2.2.4 Confirm tables exist in Logs Audit Logs .jpg" width="750">
-</p>>
+</p>
 
-Step 2.3 Confirm Logs Are Ingesting
+## Step 2.3 Confirm Logs Are Ingesting
 
 In Log Analytics → Logs, I ran:
 
@@ -161,7 +161,7 @@ Screenshot 10
 
 <p align="center">
   <img src="images/Step 2.2.4 Confirm tables exist in Logs Signin Logs.jpg" width="750">
-</p>>
+</p>
 
 
 
@@ -169,7 +169,7 @@ Screenshot 11
 
 <p align="center">
   <img src="images/Step 2.2.4 Confirm tables exist in Logs Audit Logs .jpg" width="750">
-</p>>
+</p>
 
 
 
@@ -203,7 +203,7 @@ Same network
 
 ✅ Consistency makes deviations obvious
 
-Step 3.2 Perform Baseline Sign Ins
+## Step 3.2 Perform Baseline Sign Ins
 
 I signed in normally to:
 
@@ -213,7 +213,7 @@ Entra admin center
 
 No risky behavior was performed.
 
-Step 3.3 Query Baseline Logs
+## Step 3.3 Query Baseline Logs
 
 Query used:
 
@@ -227,13 +227,13 @@ Screenshot 12
 
 <p align="center">
   <img src="images/Step 3.3 View Baseline Logs For Normal test User .jpg" width="750">
-</p>>
+</p>
 
 Screenshot 13
 
 <p align="center">
   <img src="images/Step 3.4 Open event details .jpg" width="750">
-</p>>
+</p>
 
 Baseline Notes
 
@@ -249,7 +249,7 @@ MFA behavior (if enabled)
 
 ✅ This becomes the reference point for everything else.
 
-4. Safe Suspicious Scenarios
+# 4. Safe Suspicious Scenarios
 
 All scenarios below were performed using TestUser.
 
@@ -275,24 +275,24 @@ Screenshot 14
 
 <p align="center">
   <img src="images/Step 4.3 Test Account Logs.jpg" width="750">
-</p>>
+</p>
 
 
 Screenshot 15
 
 <p align="center">
   <img src="images/Step 4.5 Event Details for the test user.jpg" width="750">
-</p>>
+</p>
 
 
 Screenshot 16
 
 <p align="center">
   <img src="images/Step 4.6 Unusual Time Login.jpg" width="750">
-</p>>
+</p>
 
 
-Observations
+# Observations 1
 
 Burst of failures is unusual
 
@@ -314,13 +314,13 @@ SigninLogs
 | order by TimeGenerated desc
 
 
-Observations
+# Observations 2
 
 Same user and location
 
 Unusual time compared to baseline routine
 
-Key Takeaway
+# Key Takeaway
 
 Security is not always about reacting to alerts.
 
