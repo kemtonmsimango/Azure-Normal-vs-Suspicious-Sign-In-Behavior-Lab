@@ -9,6 +9,11 @@ The goal was not to “hack” anything, but to learn how logs tell a story when
 ✅ Observe deviations from that baseline
 ✅ Practice reading SigninLogs and AuditLogs like a SOC analyst
 
+<p align="center">
+  <img src="images/Employees (3).png" width="750">
+</p>
+
+
 Lab Objectives
 
 Create a real Microsoft Entra ID test tenant
@@ -30,7 +35,10 @@ This confirms the lab is real and not theoretical.
 
 Screenshot 1
 
-![Entra Tenant Overview](screenshots/01-entra-tenant-overview.png)
+<p align="center">
+  <img src="images/Step 1.1 Create A Lab Default Directory.png" width="750">
+</p>
+
 
 
 Entra admin center home showing tenant name and directory overview.
@@ -54,23 +62,29 @@ Both accounts were tested to ensure successful sign in.
 
 Screenshot 2
 
-![Users List](screenshots/02-users-list.png)
+<p align="center">
+  <img src="images/Step 1.2 Image of all users created.png" width="750">
+</p>
 
 
 Screenshot 3
 
-![NormalUser Profile](screenshots/03-normaluser-profile.png)
-
+<p align="center">
+  <img src="images/Step 1.2 Normal User Summary.png" width="750">
+</p>
 
 Screenshot 4
 
-![TestUser Profile](screenshots/04-testuser-profile.png)
+<p align="center">
+  <img src="images/Step 1.2 Test User Summary.png" width="750">
+</p>
 
 
 ⚠️ Important: I never screenshot passwords or sensitive credentials.
 
-2. Enable Logging and Connect to Log Analytics
-Step 2.1 Create a Log Analytics Workspace
+# 2. Enable Logging and Connect to Log Analytics
+
+## Step 2.1 Create a Log Analytics Workspace
 
 In the Azure portal:
 
@@ -82,20 +96,24 @@ This workspace is where all sign in and audit logs are queried.
 
 Screenshot 5
 
-![Log Analytics Overview](screenshots/05-log-analytics-overview.png)
-
+<p align="center">
+  <img src="images/Step 2 Create a Log analytics .jpg" width="750">
+</p>
 
 Screenshot 6
 
-![Workspace Essentials](screenshots/06-workspace-essentials.png)
+<p align="center">
+  <img src="images/Step 2 Log Analytics workspaces.jpg" width="750">
+</p>
+
 
 Step 2.2 Connect Entra Logs Using Microsoft Sentinel
 
 I used Microsoft Sentinel because it is the cleanest way to ingest:
 
-SigninLogs
+✅SigninLogs
 
-AuditLogs
+✅AuditLogs
 
 Steps:
 
@@ -112,12 +130,18 @@ Connect required log types
 
 Screenshot 7
 
-![Sentinel Overview](screenshots/07-sentinel-overview.png)
+<p align="center">
+  <img src="images/Step 2.2.2 microsoft sentienl .jpg" width="750">
+</p>
+
 
 
 Screenshot 8
 
-![Data Connector Status](screenshots/08-data-connector-status.png)
+<p align="center">
+  <img src="images/Step 2.2.3 Connect the Microsoft ENtra ID Data connector .jpg
+" width="750">
+</p>
 
 
 Screenshot 9
