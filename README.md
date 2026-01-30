@@ -139,14 +139,15 @@ Screenshot 7
 Screenshot 8
 
 <p align="center">
-  <img src="images/Step 2.2.3 Connect the Microsoft ENtra ID Data connector .jpg
-" width="750">
+  <img src="images/Step 2.2.3 Connect data connectors .jpg" width="750">
 </p>
 
 
 Screenshot 9
 
-![Log Types Enabled](screenshots/09-log-types-enabled.png)
+<p align="center">
+  <img src="images/Step 2.2.4 Confirm tables exist in Logs Audit Logs .jpg" width="750">
+</p>>
 
 Step 2.3 Confirm Logs Are Ingesting
 
@@ -158,26 +159,33 @@ AuditLogs
 
 Screenshot 10
 
-![SigninLogs Table](screenshots/10-signinlogs-table.png)
+<p align="center">
+  <img src="images/Step 2.2.4 Confirm tables exist in Logs Signin Logs.jpg" width="750">
+</p>>
+
 
 
 Screenshot 11
 
-![AuditLogs Table](screenshots/11-auditlogs-table.png)
+<p align="center">
+  <img src="images/Step 2.2.4 Confirm tables exist in Logs Audit Logs .jpg" width="750">
+</p>>
+
 
 
 ℹ️ If logs did not appear immediately, I continued generating activity and checked again later.
 
-3. Baseline Normal Behavior
+# 3. Baseline Normal Behavior
+
 Goal
 
 Create clean, predictable sign in behavior using NormalUser.
 
 This baseline is critical because suspicious behavior only stands out when normal behavior is understood first.
 
-Step 3.1 Plan the Baseline
+## Step 3.1 Plan the Baseline
 
-I planned three normal sign ins:
+planned three normal sign ins:
 
 Morning
 
@@ -217,12 +225,15 @@ SigninLogs
 
 Screenshot 12
 
-![NormalUser Baseline Rows](screenshots/12-normaluser-baseline.png)
-
+<p align="center">
+  <img src="images/Step 3.3 View Baseline Logs For Normal test User .jpg" width="750">
+</p>>
 
 Screenshot 13
 
-![Baseline Event Details](screenshots/13-baseline-event-details.png)
+<p align="center">
+  <img src="images/Step 3.4 Open event details .jpg" width="750">
+</p>>
 
 Baseline Notes
 
@@ -262,17 +273,23 @@ SigninLogs
 
 Screenshot 14
 
-![Failure Burst Pattern](screenshots/14-failure-burst.png)
+<p align="center">
+  <img src="images/Step 4.3 Test Account Logs.jpg" width="750">
+</p>>
 
 
 Screenshot 15
 
-![Failure Event Details](screenshots/15-failure-event.png)
+<p align="center">
+  <img src="images/Step 4.5 Event Details for the test user.jpg" width="750">
+</p>>
 
 
 Screenshot 16
 
-![Success After Failures](screenshots/16-success-after-failure.png)
+<p align="center">
+  <img src="images/Step 4.6 Unusual Time Login.jpg" width="750">
+</p>>
 
 
 Observations
@@ -297,83 +314,6 @@ SigninLogs
 | order by TimeGenerated desc
 
 
-Screenshot 17
-
-![Different Device or Browser](screenshots/17-device-change.png)
-
-
-Screenshot 18
-
-![New Device Details](screenshots/18-new-device-details.png)
-
-
-Observations
-
-New device or browser breaks the baseline pattern
-
-Location changes increase suspicion
-
-Scenario C: Role Assignment Change (Audit Logs)
-
-Steps
-
-Assign a low-risk role (e.g. Reports Reader)
-
-Remove the role after a few minutes
-
-Query
-
-AuditLogs
-| where Category == "RoleManagement"
-| project TimeGenerated, OperationName, InitiatedBy, TargetResources
-| order by TimeGenerated desc
-
-
-Screenshot 19
-
-![Role Assignment Event](screenshots/19-role-assigned.png)
-
-
-Screenshot 20
-
-![Role Removal Event](screenshots/20-role-removed.png)
-
-
-Screenshot 21
-
-![Audit Event Details](screenshots/21-audit-details.png)
-
-
-Observations
-
-Normal sign ins do not involve role changes
-
-Unexpected role assignments are high-signal events
-
-Scenario D: Unusual Sign In Time
-
-Steps
-
-Sign in TestUser outside normal baseline hours
-
-Query
-
-SigninLogs
-| where UserPrincipalName has "testuser"
-| summarize SignInCount=count() by bin(TimeGenerated, 1h)
-| order by TimeGenerated desc
-
-
-Screenshot 22
-
-![Unusual Hour Histogram](screenshots/22-unusual-hour.png)
-
-
-Screenshot 23
-
-![Event Time Details](screenshots/23-time-details.png)
-
-
 Observations
 
 Same user and location
@@ -387,3 +327,5 @@ Security is not always about reacting to alerts.
 Sometimes it is about noticing when something does not fit.
 
 By establishing a baseline first, even small changes in behavior become visible and meaningful.
+
+Thank you for the Read!!
