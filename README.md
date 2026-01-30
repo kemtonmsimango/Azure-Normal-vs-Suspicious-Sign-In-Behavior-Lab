@@ -1,170 +1,365 @@
 # Normal vs Suspicious Sign In Behavior Lab
+Overview
 
-## Overview
+In this lab, I built a small identity and logging environment to understand what normal sign in behavior looks like first, before comparing it to safe, simulated suspicious behavior.
 
-This project focuses on **studying sign in and audit logs** to understand how normal user behavior differs from suspicious looking activity in Microsoft Entra ID.
+The goal was not to “hack” anything, but to learn how logs tell a story when behavior changes.
 
-The lab is built around a simple principle:
+✅ Establish a clean baseline
+✅ Observe deviations from that baseline
+✅ Practice reading SigninLogs and AuditLogs like a SOC analyst
 
-Establish what normal looks like first, then identify what stands out.
+Lab Objectives
 
----
+Create a real Microsoft Entra ID test tenant
 
-## What This Lab Demonstrates
+Generate normal sign in activity
 
-✅ Creating a clean identity lab environment  
-✅ Enabling and verifying sign in and audit logging  
-✅ Establishing a baseline of normal behavior  
-✅ Reviewing suspicious looking sign in patterns  
-✅ Using logs as evidence rather than assumptions  
+Safely simulate suspicious looking behavior
 
----
+Query and analyze logs using Log Analytics
 
-# Step 1 Create the Lab Environment
+Document what changed, why it stood out, and how I noticed
 
-## Step 1.1 Confirm or create an Entra tenant
+# 1. Create Lab Basics
+Step 1.1 Confirm or Create a Tenant
 
-I confirmed that I was working inside a dedicated lab tenant.
+I used an existing lab tenant (or created a new one if needed) to ensure all activity was isolated and safe.
 
-Why this step matters
+This confirms the lab is real and not theoretical.
 
-- Keeps all activity isolated  
-- Ensures logs belong only to known test users  
-- Prevents noise from real users  
+Screenshot 1
 
-Screenshots
+![Entra Tenant Overview](screenshots/01-entra-tenant-overview.png)
 
-- Entra admin center tenant overview
 
----
+Entra admin center home showing tenant name and directory overview.
 
-## Step 1.2 Create test users
+## Step 1.2 Create Two Test Users in Entra
 
-I created two users in Microsoft Entra ID.
+In the Entra admin center:
 
-Users created
+Users → All users → New user
 
-- NormalUser  
-- TestUser  
+I created two users:
 
-Why this step matters
+NormalUser
 
-- NormalUser represents expected behavior  
-- TestUser is used to generate controlled suspicious patterns  
+TestUser
 
-Screenshots
+Both accounts were tested to ensure successful sign in.
 
-- All users list showing both accounts  
-- NormalUser profile summary  
-- TestUser profile summary  
+✅ Separate users make baseline vs suspicious behavior easier to compare
+✅ Prevents confusing log patterns later
 
-Security note
+Screenshot 2
 
-- Passwords are never displayed or captured
+![Users List](screenshots/02-users-list.png)
 
----
 
-# Step 2 Enable Logging and Log Analytics
+Screenshot 3
 
-## Step 2.1 Create a Log Analytics workspace
+![NormalUser Profile](screenshots/03-normaluser-profile.png)
 
-I created a Log Analytics workspace in Azure and assigned it to a resource group and region.
 
-Why this step matters
+Screenshot 4
 
-- Provides a central place to query logs  
-- Enables KQL based investigation  
-- Mirrors how SOC analysts work  
+![TestUser Profile](screenshots/04-testuser-profile.png)
 
-Screenshots
 
-- Log Analytics workspace overview  
-- Workspace essentials section
+⚠️ Important: I never screenshot passwords or sensitive credentials.
 
----
+2. Enable Logging and Connect to Log Analytics
+Step 2.1 Create a Log Analytics Workspace
 
-## Step 2.2 Connect Entra logs using Microsoft Sentinel
+In the Azure portal:
 
-I enabled Microsoft Sentinel on the Log Analytics workspace and connected Entra ID logs.
+Create a resource → Log Analytics workspace
 
-Log types connected
+Select resource group and region
 
-- Sign in logs  
-- Audit logs  
+This workspace is where all sign in and audit logs are queried.
 
-Why this step matters
+Screenshot 5
 
-- Automatically creates SigninLogs and AuditLogs tables  
-- Ensures continuous ingestion of identity activity  
+![Log Analytics Overview](screenshots/05-log-analytics-overview.png)
 
-Screenshots
 
-- Sentinel overview page  
-- Data connector showing connected status  
-- Connector page listing ingested logs  
+Screenshot 6
 
----
+![Workspace Essentials](screenshots/06-workspace-essentials.png)
 
-## Step 2.3 Verify log ingestion
+Step 2.2 Connect Entra Logs Using Microsoft Sentinel
 
-I verified that logs were available in Log Analytics.
+I used Microsoft Sentinel because it is the cleanest way to ingest:
 
-Queries executed
+SigninLogs
 
-- SigninLogs  
-- AuditLogs  
+AuditLogs
 
-Why this step matters
+Steps:
 
-- Confirms data is flowing  
-- Prevents investigating empty or broken tables  
+Microsoft Sentinel → Create
 
-Screenshots
+Select Log Analytics workspace → Add
 
-- SigninLogs returning results  
-- AuditLogs returning results  
+Open Microsoft Entra ID / Azure AD data connector
 
----
+Connect required log types
 
-# Step 3 Establish Baseline Normal Behavior
+✅ Ensures logs flow correctly
+✅ Avoids missing tables or partial data
 
-## Step 3.1 Plan baseline sign in behavior
+Screenshot 7
 
-I planned consistent sign ins for NormalUser.
+![Sentinel Overview](screenshots/07-sentinel-overview.png)
 
-Baseline plan
 
-- Same device  
-- Same browser  
-- Same network  
-- Different times of day  
+Screenshot 8
 
-Why this step matters
+![Data Connector Status](screenshots/08-data-connector-status.png)
 
-- Consistency creates a reliable baseline  
-- Makes deviations easy to spot later  
 
----
+Screenshot 9
 
-## Step 3.2 Perform baseline sign ins
+![Log Types Enabled](screenshots/09-log-types-enabled.png)
 
-I signed in normally using NormalUser.
+Step 2.3 Confirm Logs Are Ingesting
 
-Actions performed
+In Log Analytics → Logs, I ran:
 
-- Signed into Microsoft 365 portal  
-- Signed into Entra portal  
-- No risky or unusual actions  
+SigninLogs
+AuditLogs
 
-Why this step matters
 
-- Generates clean and predictable log entries  
+Screenshot 10
 
----
+![SigninLogs Table](screenshots/10-signinlogs-table.png)
 
-## Step 3.3 Review baseline sign in logs
 
-I queried baseline sign in activity in Log Analytics.
+Screenshot 11
 
-Query used
+![AuditLogs Table](screenshots/11-auditlogs-table.png)
 
+
+ℹ️ If logs did not appear immediately, I continued generating activity and checked again later.
+
+3. Baseline Normal Behavior
+Goal
+
+Create clean, predictable sign in behavior using NormalUser.
+
+This baseline is critical because suspicious behavior only stands out when normal behavior is understood first.
+
+Step 3.1 Plan the Baseline
+
+I planned three normal sign ins:
+
+Morning
+
+Afternoon
+
+Night
+
+All sign ins used:
+
+Same device
+
+Same browser
+
+Same network
+
+✅ Consistency makes deviations obvious
+
+Step 3.2 Perform Baseline Sign Ins
+
+I signed in normally to:
+
+Microsoft 365 portal
+
+Entra admin center
+
+No risky behavior was performed.
+
+Step 3.3 Query Baseline Logs
+
+Query used:
+
+SigninLogs
+| where UserPrincipalName has "normaluser"
+| project TimeGenerated, UserPrincipalName, AppDisplayName, ResultType, ResultDescription, IPAddress, LocationDetails, DeviceDetail, ClientAppUsed
+| order by TimeGenerated desc
+
+
+Screenshot 12
+
+![NormalUser Baseline Rows](screenshots/12-normaluser-baseline.png)
+
+
+Screenshot 13
+
+![Baseline Event Details](screenshots/13-baseline-event-details.png)
+
+Baseline Notes
+
+Typical sign in times
+
+Typical location
+
+Typical device and browser
+
+ResultType = 0 (success)
+
+MFA behavior (if enabled)
+
+✅ This becomes the reference point for everything else.
+
+4. Safe Suspicious Scenarios
+
+All scenarios below were performed using TestUser.
+
+After each scenario, I immediately queried logs and captured screenshots while events were fresh.
+
+Scenario A: Multiple Failed Sign Ins Then Success
+
+Steps
+
+Enter wrong password 3–5 times
+
+Then sign in correctly once
+
+Query
+
+SigninLogs
+| where UserPrincipalName has "testuser"
+| project TimeGenerated, ResultType, ResultDescription, IPAddress, LocationDetails, DeviceDetail, ClientAppUsed
+| order by TimeGenerated desc
+
+
+Screenshot 14
+
+![Failure Burst Pattern](screenshots/14-failure-burst.png)
+
+
+Screenshot 15
+
+![Failure Event Details](screenshots/15-failure-event.png)
+
+
+Screenshot 16
+
+![Success After Failures](screenshots/16-success-after-failure.png)
+
+
+Observations
+
+Burst of failures is unusual
+
+Success immediately after failures stands out compared to baseline
+
+Scenario B: New Browser or New Device
+
+Steps
+
+Sign in using a different browser or incognito
+
+Optional second device
+
+Query
+
+SigninLogs
+| where UserPrincipalName has "testuser"
+| project TimeGenerated, IPAddress, LocationDetails, DeviceDetail, ClientAppUsed
+| order by TimeGenerated desc
+
+
+Screenshot 17
+
+![Different Device or Browser](screenshots/17-device-change.png)
+
+
+Screenshot 18
+
+![New Device Details](screenshots/18-new-device-details.png)
+
+
+Observations
+
+New device or browser breaks the baseline pattern
+
+Location changes increase suspicion
+
+Scenario C: Role Assignment Change (Audit Logs)
+
+Steps
+
+Assign a low-risk role (e.g. Reports Reader)
+
+Remove the role after a few minutes
+
+Query
+
+AuditLogs
+| where Category == "RoleManagement"
+| project TimeGenerated, OperationName, InitiatedBy, TargetResources
+| order by TimeGenerated desc
+
+
+Screenshot 19
+
+![Role Assignment Event](screenshots/19-role-assigned.png)
+
+
+Screenshot 20
+
+![Role Removal Event](screenshots/20-role-removed.png)
+
+
+Screenshot 21
+
+![Audit Event Details](screenshots/21-audit-details.png)
+
+
+Observations
+
+Normal sign ins do not involve role changes
+
+Unexpected role assignments are high-signal events
+
+Scenario D: Unusual Sign In Time
+
+Steps
+
+Sign in TestUser outside normal baseline hours
+
+Query
+
+SigninLogs
+| where UserPrincipalName has "testuser"
+| summarize SignInCount=count() by bin(TimeGenerated, 1h)
+| order by TimeGenerated desc
+
+
+Screenshot 22
+
+![Unusual Hour Histogram](screenshots/22-unusual-hour.png)
+
+
+Screenshot 23
+
+![Event Time Details](screenshots/23-time-details.png)
+
+
+Observations
+
+Same user and location
+
+Unusual time compared to baseline routine
+
+Key Takeaway
+
+Security is not always about reacting to alerts.
+
+Sometimes it is about noticing when something does not fit.
+
+By establishing a baseline first, even small changes in behavior become visible and meaningful.
